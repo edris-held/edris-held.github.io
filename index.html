@@ -2,13 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edris Held</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Time Based Greeting</title>
+    <link rel="icon" href="construction.ico" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column; /* <-- important */
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+        h2 {
+            font-size: 1.2rem;
+            font-weight: normal;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Under maintenance</h1>
-    </div>
+
+<h2>Under maintenance</h2>
+<h1 id="greeting"></h1>
+
+<script>
+    const now = new Date();
+    const hour = now.getHours();
+
+    const days = [
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
+    ];
+
+    const today = days[now.getDay()];
+    let message = "";
+
+    if (hour >= 5 && hour < 12) {
+        message = `Have a great start into your ${today}.`;
+    } 
+    else if (hour >= 12 && hour < 17) {
+        message = `Hope your ${today} is going well.`;
+    } 
+    else if (hour >= 17 && hour < 22) {
+        message = `Enjoy the rest of your ${today}.`;
+    } 
+    else {
+        message = `Rest well this ${today}.`;
+    }
+
+    document.getElementById("greeting").textContent = message;
+</script>
+
 </body>
 </html>
