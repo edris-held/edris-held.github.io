@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>404 - Oops</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1e1e2f, #12121a);
+        color: white;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 6rem;
+        margin: 0;
+    }
+
+    .emoji {
+        font-size: 4rem;
+        animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    button, a {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    button {
+        background: #ff4c4c;
+        color: white;
+    }
+
+    button:hover {
+        background: #ff1c1c;
+    }
+
+    a {
+        background: #00bfff;
+        color: white;
+        display: inline-block;
+    }
+
+    a:hover {
+        background: #0099cc;
+    }
+
+    .message {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+</style>
+</head>
+<body>
+
+<div class="emoji">🧭</div>
+<h1>404</h1>
+<div class="message" id="message"></div>
+
+<button onclick="newExcuse()">Blame Someone Else</button>
+<a href="/">Take Me Home</a>
+
+<script>
+const excuses = [
+    "The page ran away. We’re chasing it.",
+    "Aliens abducted this page 👽",
+    "Our hamster powering the server is tired.",
+    "You broke the internet. Congratulations.",
+    "This page is in another castle.",
+    "404 calories burned looking for this page.",
+    "The developer forgot to commit it.",
+    "This page went out for milk and never came back."
+];
+
+function newExcuse() {
+    const random = excuses[Math.floor(Math.random() * excuses.length)];
+    document.getElementById("message").textContent = random;
+}
+
+// Show one immediately
+newExcuse();
+</script>
+
+</body>
+</html>
