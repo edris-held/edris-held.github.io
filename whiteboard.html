@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whiteboard</title>
+<style>
+  :root {
+    --toolbar-bg: #1e1e24;
+    --toolbar-border: #34343c;
+    --toolbar-text: #e8e8ec;
+    --toolbar-text-muted: #9a99a6;
+    --accent: #6c63ff;
+    --canvas-bg: #ffffff;
+    --tool-active-bg: #6c63ff;
+    --tool-hover-bg: #2d2d36;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--canvas-bg);
+  }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--toolbar-bg);
+    color: var(--toolbar-text);
+    flex-wrap: wrap;
+    z-index: 10;
+    border-bottom: 1px solid var(--toolbar-border);
+  }
+
+  .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-right: 10px;
+    border-right: 1px solid var(--toolbar-border);
+  }
+  .toolbar-group:last-child { border-right: none; }
+
+  .tool-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--toolbar-text);
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.12s ease;
+  }
+  .tool-btn:hover { background: var(--tool-hover-bg); }
+  .tool-btn.active {
+    background: var(--tool-active-bg);
+    color: white;
+  }
+
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+    flex-shrink: 0;
+  }
+  .swatch.active {
+    border-color: var(--toolbar-text);
+    transform: scale(1.15);
+  }
+
+  #sizeSlider {
+    width: 70px;
+  }
+
+  .toolbar select {
+    background: var(--tool-hover-bg);
+    color: var(--toolbar-text);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .toolbar button.text-btn {
+    background: var(--tool-hover-bg);
+    color: var(--toolbar-text);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .toolbar button.text-btn:hover { background: #3a3a44; }
+
+  .spacer { flex: 1; }
+
+  /* ---------- Status / presence ---------- */
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--toolbar-text-muted);
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    flex-shrink: 0;
+  }
+  .room-input {
+    background: var(--tool-hover-bg);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--toolbar-text);
+    font-size: 13px;
+    width: 110px;
+  }
+
+  /* ---------- Canvas area ---------- */
+  .canvas-wrap {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  /* Remote cursors */
+  .cursor-label {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(-2px, -2px);
+    transition: left 0.06s linear, top 0.06s linear;
+    z-index: 5;
+  }
+  .cursor-label .dot-cur {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-bottom: 2px;
+  }
+  .cursor-label .name-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  /* Text input overlay */
+  .text-input-overlay {
+    position: absolute;
+    border: 1px dashed var(--accent);
+    background: rgba(255,255,255,0.95);
+    padding: 4px 6px;
+    font-family: 'Segoe UI', sans-serif;
+    outline: none;
+    min-width: 60px;
+    border-radius: 4px;
+    z-index: 6;
+  }
+
+  /* Empty state */
+  .empty-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #c4c4cc;
+    font-size: 15px;
+    text-align: center;
+    pointer-events: none;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 700px) {
+    .toolbar { gap: 4px; padding: 6px 8px; }
+    .room-input { width: 80px; }
+    .toolbar-group { padding-right: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button class="tool-btn active" data-tool="pen" title="Stift">&#9998;</button>
+    <button class="tool-btn" data-tool="eraser" title="Radierer">&#9039;</button>
+    <button class="tool-btn" data-tool="rect" title="Rechteck">&#9633;</button>
+    <button class="tool-btn" data-tool="ellipse" title="Ellipse">&#9711;</button>
+    <button class="tool-btn" data-tool="line" title="Linie">&#8211;</button>
+    <button class="tool-btn" data-tool="text" title="Text">T</button>
+  </div>
+
+  <div class="toolbar-group">
+    <div class="swatch active" data-color="#1e1e24" style="background:#1e1e24"></div>
+    <div class="swatch" data-color="#e24b4a" style="background:#e24b4a"></div>
+    <div class="swatch" data-color="#1d9e75" style="background:#1d9e75"></div>
+    <div class="swatch" data-color="#378ade" style="background:#378ade"></div>
+    <div class="swatch" data-color="#ef9f27" style="background:#ef9f27"></div>
+    <div class="swatch" data-color="#7f77dd" style="background:#7f77dd"></div>
+  </div>
+
+  <div class="toolbar-group">
+    <input type="range" id="sizeSlider" min="1" max="30" value="3">
+  </div>
+
+  <div class="toolbar-group">
+    <button class="text-btn" id="clearBtn">Alles löschen</button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="toolbar-group" style="border-right:none;">
+    <span style="font-size:13px; color: var(--toolbar-text-muted);">Raum:</span>
+    <input type="text" class="room-input" id="roomInput" value="raum-1" maxlength="20">
+  </div>
+
+  <div class="status">
+    <span class="dot"></span>
+    <span id="peerCount">1 Person hier</span>
+  </div>
+</div>
+
+<div class="canvas-wrap" id="canvasWrap">
+  <canvas id="board"></canvas>
+  <div class="empty-hint" id="emptyHint">
+    Leere Leinwand &mdash; zeichne etwas<br>
+    Öffne diese Seite in einem zweiten Tab mit demselben Raumnamen, um Live-Sync zu sehen
+  </div>
+</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const wrap = document.getElementById('canvasWrap');
+  const emptyHint = document.getElementById('emptyHint');
+  const roomInput = document.getElementById('roomInput');
+  const peerCountEl = document.getElementById('peerCount');
+
+  const MY_ID = Math.random().toString(36).slice(2, 9);
+  const MY_COLOR = ['#e24b4a','#1d9e75','#378ade','#ef9f27','#7f77dd','#d4537e'][Math.floor(Math.random()*6)];
+  const MY_NAME = 'Du (' + MY_ID.slice(0,4) + ')';
+
+  let room = roomInput.value.trim() || 'raum-1';
+  let channel = null;
+  let elements = [];      // committed shapes
+  let currentTool = 'pen';
+  let currentColor = '#1e1e24';
+  let currentSize = 3;
+  let drawing = false;
+  let currentStroke = null;
+  let startPoint = null;
+  let textOverlay = null;
+
+  const remoteCursors = {}; // id -> { el, lastSeen }
+  const peers = new Set();
+
+  // ---------- Storage / sync keys ----------
+  function dataKey() { return 'whiteboard-data-' + room; }
+
+  function getChannel() {
+    return new BroadcastChannel('whiteboard-' + room);
+  }
+
+  // ---------- Canvas sizing ----------
+  function resizeCanvas() {
+    const rect = wrap.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redraw();
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  // ---------- Persistence ----------
+  function saveData() {
+    try {
+      localStorage.setItem(dataKey(), JSON.stringify(elements));
+    } catch (e) {}
+  }
+
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(dataKey());
+      elements = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      elements = [];
+    }
+    redraw();
+  }
+
+  // ---------- Drawing ----------
+  function getPos(evt) {
+    const rect = canvas.getBoundingClientRect();
+    const point = evt.touches ? evt.touches[0] : evt;
+    return {
+      x: point.clientX - rect.left,
+      y: point.clientY - rect.top
+    };
+  }
+
+  function drawElement(el) {
+    ctx.save();
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+
+    if (el.type === 'stroke' || el.type === 'eraser') {
+      if (!el.points || el.points.length < 2) {
+        ctx.restore();
+        return;
+      }
+      ctx.strokeStyle = el.type === 'eraser' ? '#ffffff' : el.color;
+      ctx.lineWidth = el.size;
+      ctx.beginPath();
+      ctx.moveTo(el.points[0].x, el.points[0].y);
+      for (let i = 1; i < el.points.length; i++) {
+        ctx.lineTo(el.points[i].x, el.points[i].y);
+      }
+      ctx.stroke();
+    } else if (el.type === 'rect') {
+      ctx.strokeStyle = el.color;
+      ctx.lineWidth = el.size;
+      ctx.strokeRect(el.x, el.y, el.w, el.h);
+    } else if (el.type === 'ellipse') {
+      ctx.strokeStyle = el.color;
+      ctx.lineWidth = el.size;
+      ctx.beginPath();
+      ctx.ellipse(el.x + el.w / 2, el.y + el.h / 2, Math.abs(el.w / 2), Math.abs(el.h / 2), 0, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (el.type === 'line') {
+      ctx.strokeStyle = el.color;
+      ctx.lineWidth = el.size;
+      ctx.beginPath();
+      ctx.moveTo(el.x1, el.y1);
+      ctx.lineTo(el.x2, el.y2);
+      ctx.stroke();
+    } else if (el.type === 'text') {
+      ctx.fillStyle = el.color;
+      ctx.font = (14 + el.size) + 'px Segoe UI, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText(el.text, el.x, el.y);
+    }
+    ctx.restore();
+  }
+
+  function redraw() {
+    const rect = wrap.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    elements.forEach(drawElement);
+    if (currentStroke) drawElement(currentStroke);
+    emptyHint.style.display = elements.length === 0 ? 'block' : 'none';
+  }
+
+  // ---------- Broadcast ----------
+  function broadcast(msg) {
+    if (channel) {
+      try { channel.postMessage(msg); } catch (e) {}
+    }
+  }
+
+  function commitElement(el) {
+    elements.push(el);
+    saveData();
+    redraw();
+    broadcast({ type: 'add', element: el, from: MY_ID });
+  }
+
+  function clearBoard(broadcastIt) {
+    elements = [];
+    saveData();
+    redraw();
+    if (broadcastIt) broadcast({ type: 'clear', from: MY_ID });
+  }
+
+  // ---------- Pointer events ----------
+  function pointerDown(evt) {
+    if (currentTool === 'text') return; // handled separately
+    drawing = true;
+    const pos = getPos(evt);
+    startPoint = pos;
+
+    if (currentTool === 'pen' || currentTool === 'eraser') {
+      currentStroke = {
+        type: currentTool === 'eraser' ? 'eraser' : 'stroke',
+        color: currentColor,
+        size: currentTool === 'eraser' ? currentSize * 4 : currentSize,
+        points: [pos]
+      };
+    } else if (currentTool === 'rect' || currentTool === 'ellipse') {
+      currentStroke = { type: currentTool, color: currentColor, size: currentSize, x: pos.x, y: pos.y, w: 0, h: 0 };
+    } else if (currentTool === 'line') {
+      currentStroke = { type: 'line', color: currentColor, size: currentSize, x1: pos.x, y1: pos.y, x2: pos.x, y2: pos.y };
+    }
+    redraw();
+  }
+
+  function pointerMove(evt) {
+    const pos = getPos(evt);
+
+    // broadcast cursor position regardless of drawing state
+    broadcast({ type: 'cursor', from: MY_ID, name: MY_NAME, color: MY_COLOR, x: pos.x, y: pos.y });
+
+    if (!drawing || !currentStroke) return;
+
+    if (currentStroke.type === 'stroke' || currentStroke.type === 'eraser') {
+      currentStroke.points.push(pos);
+    } else if (currentStroke.type === 'rect' || currentStroke.type === 'ellipse') {
+      currentStroke.w = pos.x - startPoint.x;
+      currentStroke.h = pos.y - startPoint.y;
+    } else if (currentStroke.type === 'line') {
+      currentStroke.x2 = pos.x;
+      currentStroke.y2 = pos.y;
+    }
+    redraw();
+  }
+
+  function pointerUp() {
+    if (!drawing || !currentStroke) return;
+    drawing = false;
+
+    // normalize rect with negative w/h
+    if (currentStroke.type === 'rect' || currentStroke.type === 'ellipse') {
+      if (currentStroke.w === 0 && currentStroke.h === 0) {
+        currentStroke = null;
+        redraw();
+        return;
+      }
+      if (currentStroke.w < 0) {
+        currentStroke.x += currentStroke.w;
+        currentStroke.w = Math.abs(currentStroke.w);
+      }
+      if (currentStroke.h < 0) {
+        currentStroke.y += currentStroke.h;
+        currentStroke.h = Math.abs(currentStroke.h);
+      }
+    }
+
+    commitElement(currentStroke);
+    currentStroke = null;
+  }
+
+  canvas.addEventListener('mousedown', pointerDown);
+  canvas.addEventListener('mousemove', pointerMove);
+  window.addEventListener('mouseup', pointerUp);
+
+  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); pointerDown(e); }, { passive: false });
+  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); pointerMove(e); }, { passive: false });
+  canvas.addEventListener('touchend', (e) => { e.preventDefault(); pointerUp(); }, { passive: false });
+
+  // ---------- Text tool ----------
+  canvas.addEventListener('click', (evt) => {
+    if (currentTool !== 'text' || textOverlay) return;
+    const pos = getPos(evt);
+    const overlay = document.createElement('input');
+    overlay.type = 'text';
+    overlay.className = 'text-input-overlay';
+    overlay.style.left = pos.x + 'px';
+    overlay.style.top = pos.y + 'px';
+    overlay.style.fontSize = (14 + currentSize) + 'px';
+    overlay.style.color = currentColor;
+    wrap.appendChild(overlay);
+    overlay.focus();
+    textOverlay = overlay;
+
+    function finish() {
+      const val = overlay.value.trim();
+      if (val) {
+        commitElement({ type: 'text', color: currentColor, size: currentSize, x: pos.x, y: pos.y, text: val });
+      }
+      overlay.remove();
+      textOverlay = null;
+    }
+
+    overlay.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') finish();
+      if (e.key === 'Escape') { overlay.remove(); textOverlay = null; }
+    });
+    overlay.addEventListener('blur', finish);
+  });
+
+  // ---------- Toolbar wiring ----------
+  document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTool = btn.dataset.tool;
+      canvas.style.cursor = currentTool === 'text' ? 'text' : 'crosshair';
+    });
+  });
+
+  document.querySelectorAll('.swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      currentColor = sw.dataset.color;
+    });
+  });
+
+  document.getElementById('sizeSlider').addEventListener('input', (e) => {
+    currentSize = parseInt(e.target.value, 10);
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (confirm('Wirklich die gesamte Leinwand für alle in diesem Raum löschen?')) {
+      clearBoard(true);
+    }
+  });
+
+  // ---------- Room switching ----------
+  function joinRoom(newRoom) {
+    if (channel) {
+      broadcast({ type: 'leave', from: MY_ID });
+      channel.close();
+    }
+    room = newRoom;
+    Object.values(remoteCursors).forEach(c => c.el.remove());
+    for (const k in remoteCursors) delete remoteCursors[k];
+    peers.clear();
+    updatePeerCount();
+
+    channel = getChannel();
+    channel.onmessage = handleMessage;
+    loadData();
+    broadcast({ type: 'join', from: MY_ID, name: MY_NAME });
+  }
+
+  roomInput.addEventListener('change', () => {
+    const val = roomInput.value.trim() || 'raum-1';
+    roomInput.value = val;
+    joinRoom(val);
+  });
+
+  // ---------- Remote message handling ----------
+  function handleMessage(msg) {
+    const data = msg.data;
+    if (!data || data.from === MY_ID) return;
+
+    if (data.type === 'add') {
+      elements.push(data.element);
+      saveData();
+      redraw();
+    } else if (data.type === 'clear') {
+      elements = [];
+      saveData();
+      redraw();
+    } else if (data.type === 'cursor') {
+      peers.add(data.from);
+      updatePeerCount();
+      showRemoteCursor(data);
+    } else if (data.type === 'join') {
+      peers.add(data.from);
+      updatePeerCount();
+      // reply so the new peer knows about us too
+      broadcast({ type: 'presence', from: MY_ID, name: MY_NAME });
+    } else if (data.type === 'presence') {
+      peers.add(data.from);
+      updatePeerCount();
+    } else if (data.type === 'leave') {
+      peers.delete(data.from);
+      if (remoteCursors[data.from]) {
+        remoteCursors[data.from].el.remove();
+        delete remoteCursors[data.from];
+      }
+      updatePeerCount();
+    }
+  }
+
+  function updatePeerCount() {
+    const total = peers.size + 1;
+    peerCountEl.textContent = total === 1 ? '1 Person hier' : total + ' Personen hier';
+  }
+
+  function showRemoteCursor(data) {
+    let entry = remoteCursors[data.from];
+    if (!entry) {
+      const el = document.createElement('div');
+      el.className = 'cursor-label';
+      el.innerHTML = '<div class="dot-cur" style="background:' + data.color + '"></div>' +
+                      '<div class="name-tag" style="background:' + data.color + '">' + escapeHtml(data.name) + '</div>';
+      wrap.appendChild(el);
+      entry = { el, lastSeen: 0 };
+      remoteCursors[data.from] = entry;
+    }
+    entry.el.style.left = data.x + 'px';
+    entry.el.style.top = data.y + 'px';
+    entry.lastSeen = Date.now();
+  }
+
+  // remove stale cursors
+  setInterval(() => {
+    const now = Date.now();
+    for (const id in remoteCursors) {
+      if (now - remoteCursors[id].lastSeen > 4000) {
+        remoteCursors[id].el.remove();
+        delete remoteCursors[id];
+        peers.delete(id);
+      }
+    }
+    updatePeerCount();
+  }, 2000);
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // also sync if data changes via localStorage from another origin tab without BroadcastChannel support
+  window.addEventListener('storage', (e) => {
+    if (e.key === dataKey()) {
+      loadData();
+    }
+  });
+
+  // notify others when tab closes
+  window.addEventListener('beforeunload', () => {
+    broadcast({ type: 'leave', from: MY_ID });
+  });
+
+  // ---------- Init ----------
+  resizeCanvas();
+  joinRoom(room);
+})();
+</script>
+
+</body>
+</html>
