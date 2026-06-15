@@ -19,10 +19,23 @@
     height: 100vh;
     border: none;
   }
+  button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    padding: 10px 16px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
-  <iframe
+  <iframe id="player"
     src="https://www.youtube.com/embed/6oTWBNOz6VQ?autoplay=1&mute=1&loop=1&playlist=6oTWBNOz6VQ&controls=0"
     allow="autoplay; fullscreen"
     allowfullscreen>
