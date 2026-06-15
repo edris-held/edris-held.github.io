@@ -19,18 +19,22 @@
     height: 100vh;
     border: none;
   }
-  button {
+  .unmute-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 10;
-    padding: 10px 16px;
-    font-size: 14px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 6px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    font-size: 80px;
+    background: rgba(0,0,0,0.4);
+    border: none;
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 </head>
@@ -40,12 +44,15 @@
     allow="autoplay; fullscreen"
     allowfullscreen>
   </iframe>
-  <button onclick="unmute()">🔊 Unmute</button>
+  <button class="unmute-btn" id="unmuteBtn" onclick="unmute()">🔇</button>
 
 <script>
   const player = document.getElementById("player");
+  const btn = document.getElementById("unmuteBtn");
+
   function unmute() {
     player.src = player.src.replace("mute=1", "mute=0");
+    btn.style.display = "none";
   }
 </script>
 </body>
