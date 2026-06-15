@@ -27,5 +27,13 @@
     allow="autoplay; fullscreen"
     allowfullscreen>
   </iframe>
+  <button onclick="unmute()">🔊 Unmute</button>
+
+<script>
+  const player = document.getElementById("player");
+  function unmute() {
+    player.src = player.src.replace("mute=1", "mute=0");
+  }
+</script>
 </body>
 </html>
