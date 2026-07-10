@@ -38,4 +38,55 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.add("in-view");
     });
   }
+
+  // Countdown to the firework
+  var countdownEl = document.querySelector(".countdown");
+  if (countdownEl) {
+    var target = new Date(countdownEl.getAttribute("data-countdown")).getTime();
+    var grid = countdownEl.querySelector(".countdown-grid");
+    var message = countdownEl.querySelector(".countdown-message");
+    var valueEls = {
+      days: countdownEl.querySelector('[data-unit="days"]'),
+      hours: countdownEl.querySelector('[data-unit="hours"]'),
+      minutes: countdownEl.querySelector('[data-unit="minutes"]'),
+      seconds: countdownEl.querySelector('[data-unit="seconds"]')
+    };
+    var pad = function (n) {
+      return String(n).padStart(2, "0");
+    };
+
+    var tick = function () {
+      var diff = target - Date.now();
+
+      // Still counting down
+      if (diff > 0) {
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var minutes = Math.floor((diff % 3600000) / 60000);
+        var seconds = Math.floor((diff % 60000) / 1000);
+        valueEls.days.textContent = pad(days);
+        valueEls.hours.textContent = pad(hours);
+        valueEls.minutes.textContent = pad(minutes);
+        valueEls.seconds.textContent = pad(seconds);
+        return;
+      }
+
+      // Within the display window (event day, up to ~6h after start): show a live message
+      if (diff > -6 * 3600000) {
+        grid.hidden = true;
+        message.hidden = false;
+        message.textContent = "Es ist soweit — das Feuerwerk läuft gerade!";
+        return;
+      }
+
+      // Well past the event: stop updating
+      grid.hidden = true;
+      message.hidden = false;
+      message.textContent = "Bis zum nächsten Mal!";
+      clearInterval(intervalId);
+    };
+
+    tick();
+    var intervalId = setInterval(tick, 1000);
+  }
 });
