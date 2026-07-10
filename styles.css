@@ -271,6 +271,24 @@ nav.primary-nav a[aria-current="page"]::after{
 .hero-night .btn-ghost{ border-color:rgba(244,241,233,0.3); color:var(--night-ink); }
 .hero-night .btn-ghost:hover{ border-color:var(--night-ink); }
 
+/* ---- 404 / error page ---- */
+.error-hero{
+  min-height:78vh;
+  display:flex;
+  align-items:center;
+  padding-top:clamp(40px, 8vw, 72px);
+  padding-bottom:clamp(40px, 8vw, 72px);
+}
+.error-hero .wrap{ width:100%; }
+.error-code{
+  font-size:clamp(96px, 20vw, 200px);
+  line-height:0.9;
+  color:var(--accent-warm);
+  text-shadow:0 0 40px rgba(232,163,61,0.35);
+  margin-bottom:0.15em;
+}
+.error-hero .tagline{ max-width:56ch; }
+
 .firework-field{
   position:absolute; inset:0;
   pointer-events:none;
