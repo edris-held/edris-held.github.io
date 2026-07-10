@@ -1,66 +1,342 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Edris Held</title>
-    <link rel="icon" href="construction.ico" type="image/x-icon">
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column; /* <-- important */
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: #fff;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2rem;
-            margin: 0;
-        }
-        h2 {
-            font-size: 1.2rem;
-            font-weight: normal;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Elbe brennt</title>
+<meta name="description" content="Die Elbe brennt ist ein jährliches Lampionfest mit großem Feuerwerk in Drage.">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h2>Under maintenance</h2>
-<h1 id="greeting"></h1>
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <span class="brand-logo">
+        <img src="logo-elbmarsch.svg" alt="Samtgemeinde Elbmarsch">
+      </span>
+      <span class="brand-text">
+        <span class="brand-org">Freiwillige Feuerwehr Drage</span>
+        <span class="brand-name">Die Elbe brennt</span>
+      </span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span>
+    </button>
+    <nav class="primary-nav">
+      <ul>
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="anreise.html">Anreise</a></li>
+        <li><a href="geschichte.html">Geschichte</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-<script>
-    const now = new Date();
-    const hour = now.getHours();
+<main>
 
-    const days = [
-        "Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"
-    ];
+  <section class="hero hero-night">
+    <div class="firework-field" aria-hidden="true">
+      <svg class="firework-burst" width="180" height="240" viewBox="0 0 180 240" style="top:-30px; right:6%;">
+        <g class="burst-trail">
+          <path class="trail-line" d="M 64 232 C 44 196, 44 152, 68 122 C 82 105, 86 96, 90 90" pathLength="100" stroke-width="1.5" fill="none" stroke-linecap="round" />
+          <circle class="trail-head trail-head-lg" cx="64" cy="232" r="2.2" />
+        </g>
+        <g class="burst-shape">
+          <g stroke-width="1.5" opacity="0.9">
+            <line x1="90" y1="90" x2="90" y2="20" />
+            <line x1="90" y1="90" x2="139" y2="41" />
+            <line x1="90" y1="90" x2="160" y2="90" />
+            <line x1="90" y1="90" x2="139" y2="139" />
+            <line x1="90" y1="90" x2="90" y2="160" />
+            <line x1="90" y1="90" x2="41" y2="139" />
+            <line x1="90" y1="90" x2="20" y2="90" />
+            <line x1="90" y1="90" x2="41" y2="41" />
+          </g>
+          <circle class="spark" cx="90" cy="20" r="2.5" />
+          <circle class="spark" cx="139" cy="41" r="2.5" />
+          <circle class="spark" cx="160" cy="90" r="2.5" />
+          <circle class="spark" cx="139" cy="139" r="2.5" />
+          <circle class="spark" cx="90" cy="160" r="2.5" />
+          <circle class="spark" cx="41" cy="139" r="2.5" />
+          <circle class="spark" cx="20" cy="90" r="2.5" />
+          <circle class="spark" cx="41" cy="41" r="2.5" />
+          <circle class="core" cx="90" cy="90" r="4" />
+        </g>
+      </svg>
+      <svg class="firework-burst" width="90" height="120" viewBox="0 0 90 120" style="bottom:10%; left:4%;">
+        <g class="burst-trail">
+          <path class="trail-line" d="M 32 116 C 22 98, 22 76, 34 61 C 41 52, 43 48, 45 45" pathLength="100" stroke-width="1.2" fill="none" stroke-linecap="round" />
+          <circle class="trail-head trail-head-sm" cx="32" cy="116" r="1.5" />
+        </g>
+        <g class="burst-shape">
+          <g stroke-width="1.2" opacity="0.6">
+            <line x1="45" y1="45" x2="45" y2="10" />
+            <line x1="45" y1="45" x2="70" y2="27" />
+            <line x1="45" y1="45" x2="80" y2="45" />
+            <line x1="45" y1="45" x2="70" y2="63" />
+            <line x1="45" y1="45" x2="45" y2="80" />
+            <line x1="45" y1="45" x2="20" y2="63" />
+            <line x1="45" y1="45" x2="10" y2="45" />
+            <line x1="45" y1="45" x2="20" y2="27" />
+          </g>
+          <circle class="core" cx="45" cy="45" r="3" />
+        </g>
+      </svg>
+      <svg class="firework-burst" width="70" height="100" viewBox="0 0 70 100" style="top:36px; left:20%;">
+        <g class="burst-trail">
+          <path class="trail-line" d="M 50 98 C 20 80, 20 55, 38 42 C 46 36, 48 33, 35 35" pathLength="100" stroke-width="1.1" fill="none" stroke-linecap="round" />
+          <circle class="trail-head trail-head-c" cx="50" cy="98" r="1.8" />
+        </g>
+        <g class="burst-shape">
+          <g stroke-width="1.1" opacity="0.75">
+            <line x1="35" y1="35" x2="65" y2="35" />
+            <line x1="35" y1="35" x2="56.2" y2="56.2" />
+            <line x1="35" y1="35" x2="35" y2="65" />
+            <line x1="35" y1="35" x2="13.8" y2="56.2" />
+            <line x1="35" y1="35" x2="5" y2="35" />
+            <line x1="35" y1="35" x2="13.8" y2="13.8" />
+            <line x1="35" y1="35" x2="35" y2="5" />
+            <line x1="35" y1="35" x2="56.2" y2="13.8" />
+          </g>
+          <circle class="spark" cx="65" cy="35" r="2" />
+          <circle class="spark" cx="56.2" cy="56.2" r="2" />
+          <circle class="spark" cx="35" cy="65" r="2" />
+          <circle class="spark" cx="13.8" cy="56.2" r="2" />
+          <circle class="spark" cx="5" cy="35" r="2" />
+          <circle class="spark" cx="13.8" cy="13.8" r="2" />
+          <circle class="spark" cx="35" cy="5" r="2" />
+          <circle class="spark" cx="56.2" cy="13.8" r="2" />
+          <circle class="core" cx="35" cy="35" r="3" />
+        </g>
+      </svg>
+      <svg class="firework-burst" width="130" height="170" viewBox="0 0 130 170" style="bottom:2%; right:20%;">
+        <g class="burst-trail">
+          <path class="trail-line" d="M 30 168 C 70 140, 72 100, 50 75 C 38 63, 35 55, 60 60" pathLength="100" stroke-width="1.4" fill="none" stroke-linecap="round" />
+          <circle class="trail-head trail-head-d" cx="30" cy="168" r="2.4" />
+        </g>
+        <g class="burst-shape">
+          <g stroke-width="1.4" opacity="0.8">
+            <line x1="60" y1="60" x2="105" y2="60" />
+            <line x1="60" y1="60" x2="91.8" y2="91.8" />
+            <line x1="60" y1="60" x2="60" y2="105" />
+            <line x1="60" y1="60" x2="28.2" y2="91.8" />
+            <line x1="60" y1="60" x2="15" y2="60" />
+            <line x1="60" y1="60" x2="28.2" y2="28.2" />
+            <line x1="60" y1="60" x2="60" y2="15" />
+            <line x1="60" y1="60" x2="91.8" y2="28.2" />
+          </g>
+          <circle class="spark" cx="105" cy="60" r="2.3" />
+          <circle class="spark" cx="91.8" cy="91.8" r="2.3" />
+          <circle class="spark" cx="60" cy="105" r="2.3" />
+          <circle class="spark" cx="28.2" cy="91.8" r="2.3" />
+          <circle class="spark" cx="15" cy="60" r="2.3" />
+          <circle class="spark" cx="28.2" cy="28.2" r="2.3" />
+          <circle class="spark" cx="60" cy="15" r="2.3" />
+          <circle class="spark" cx="91.8" cy="28.2" r="2.3" />
+          <circle class="core" cx="60" cy="60" r="3.6" />
+        </g>
+      </svg>
+      <svg class="firework-burst" width="55" height="80" viewBox="0 0 55 80" style="top:14%; left:48%;">
+        <g class="burst-trail">
+          <path class="trail-line" d="M 38 78 C 18 64, 18 46, 30 34 C 35 30, 33 28, 27 27" pathLength="100" stroke-width="1" fill="none" stroke-linecap="round" />
+          <circle class="trail-head trail-head-e" cx="38" cy="78" r="1.4" />
+        </g>
+        <g class="burst-shape">
+          <g stroke-width="1" opacity="0.6">
+            <line x1="27" y1="27" x2="47" y2="27" />
+            <line x1="27" y1="27" x2="41.1" y2="41.1" />
+            <line x1="27" y1="27" x2="27" y2="47" />
+            <line x1="27" y1="27" x2="12.9" y2="41.1" />
+            <line x1="27" y1="27" x2="7" y2="27" />
+            <line x1="27" y1="27" x2="12.9" y2="12.9" />
+            <line x1="27" y1="27" x2="27" y2="7" />
+            <line x1="27" y1="27" x2="41.1" y2="12.9" />
+          </g>
+          <circle class="spark" cx="47" cy="27" r="1.6" />
+          <circle class="spark" cx="41.1" cy="41.1" r="1.6" />
+          <circle class="spark" cx="27" cy="47" r="1.6" />
+          <circle class="spark" cx="12.9" cy="41.1" r="1.6" />
+          <circle class="spark" cx="7" cy="27" r="1.6" />
+          <circle class="spark" cx="12.9" cy="12.9" r="1.6" />
+          <circle class="spark" cx="27" cy="7" r="1.6" />
+          <circle class="spark" cx="41.1" cy="12.9" r="1.6" />
+          <circle class="core" cx="27" cy="27" r="2" />
+        </g>
+      </svg>
+    </div>
+    <div class="wrap">
+      <p class="eyebrow">Samstag, 15. August 2026 · Drage</p>
+      <h1>Die Elbe brennt!<br>66. Lampionfest der Freiwilligen Feuerwehr Drage</h1>
+      <p class="tagline">Es ist das Highlight des Jahres im beschaulichen Drage: An jedem dritten Augustwochenende heißt es im Ort wieder "Die Elbe brennt". Wenn die Sonne hinterm Horizont verschwindet, startet eines der größten Höhenfeuerwerke in Norddeutschland.</p>
 
-    const today = days[now.getDay()];
-    let message = "";
+      <div class="facts-row">
+        <div class="fact">
+          <div class="fact-label">Datum</div>
+          <div class="fact-value">Sa., 15. Aug 2026</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Leistungsvergleiche</div>
+          <div class="fact-value">ab 11:30 Uhr</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Feuerwerk</div>
+          <div class="fact-value">ca. 22:00 Uhr</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Eintritt</div>
+          <div class="fact-value">5€, Kinder bis 12 frei</div>
+        </div>
+      </div>
 
-    if (hour >= 5 && hour < 12) {
-        message = `Have a great start into your ${today}.`;
-    } 
-    else if (hour >= 12 && hour < 17) {
-        message = `Hope your ${today} is going well.`;
-    } 
-    else if (hour >= 17 && hour < 22) {
-        message = `Enjoy the rest of your ${today}.`;
-    } 
-    else {
-        message = `Rest well this ${today}.`;
-    }
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="directions.html">Anreise</a>
+        <a class="btn btn-ghost" href="#programme">Programm</a>
+      </div>
+    </div>
+  </section>
 
-    document.getElementById("greeting").textContent = message;
-</script>
+  <section id="programme">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">Programm</p>
+          <h2>Zeitplan</h2>
+        </div>
+        <p class="lede">Schon ab 11:30 Leistungsvergleiche der Feuerwehren des Landkreises Harburg auf dem Festplatz in Drage.</p>
+      </div>
 
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">11:30</div>
+          <div class="timeline-title">Leistungsvergleich</div>
+          <p class="timeline-desc">Leistungsvergleiche der (Jugend-)Feuerwehren des Landkreises Harburg.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:00</div>
+          <div class="timeline-title">Siegerehrung</div>
+          <p class="timeline-desc">Die Leistungsvergleiche werden mit einer anschließenden Siegerehrung beendet.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">21:00</div>
+          <div class="timeline-title">Laternenumzug</div>
+          <p class="timeline-desc">Der Laternenumzug der Kinder startet am Dragweg Ecke Hein-Block-Straße.</p>
+        </div>
+        <div class="timeline-item timeline-item--main">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">22:00</div>
+          <div class="timeline-title">Feuerwerk</div>
+          <p class="timeline-desc">Gepaart mit einem Wasserlichtspiel und Bengalfeuern startet das Höhenfeuerwerk direkt an der Elbe.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap reveal">
+      <div class="notice">
+        <div class="notice-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="12" stroke="currentColor"/><line x1="13" y1="7" x2="13" y2="14" stroke="currentColor" stroke-width="1.6"/><circle cx="13" cy="18" r="1" fill="currentColor"/></svg>
+        </div>
+        <div>
+          <h3>Bitte beachten!</h3>
+          <p>Die Zufahrten zum Festplatz sind ausgeschildert. Bitte beachtet die Anweisungen unserer einweisenden Personen, damit die Rettungswege freibleiben und der Verkehr nach dem Feuerwerk geordnet abfließen kann.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">Highlights</p>
+          <h2>Three reasons to come</h2>
+        </div>
+      </div>
+
+      <div class="card-grid reveal">
+        <div class="card">
+          <p class="eyebrow">01</p>
+          <h3>[The firework display]</h3>
+          <p>[Placeholder — describe the show: length, who runs it, and what makes it worth the trip.]</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">02</p>
+          <h3>[Meet the fire department]</h3>
+          <p>[Placeholder — engine tours, gear demonstrations, and a chance to meet the volunteers who keep the town safe.]</p>
+        </div>
+        <div class="card">
+          <p class="eyebrow">03</p>
+          <h3>[Food & drink]</h3>
+          <p>[Placeholder — grilled food, drinks, and cake, with proceeds supporting the department.]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="split reveal">
+        <div>
+          <p class="eyebrow">Seit den 60ern</p>
+          <h2>Veranstaltet von der Feuerwehr Drage</h2>
+          <p>[Two or three sentences on how the volunteer fire department started the event and why they keep it going — with a link to read the full story.]</p>
+          <a class="btn btn-ghost" href="history.html">Erfahre mehr</a>
+        </div>
+        <div class="pull-figure" aria-hidden="true">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#B3241C" stroke-width="1.3" opacity="0.85">
+              <line x1="60" y1="60" x2="60" y2="12"/>
+              <line x1="60" y1="60" x2="94" y2="26"/>
+              <line x1="60" y1="60" x2="108" y2="60"/>
+              <line x1="60" y1="60" x2="94" y2="94"/>
+              <line x1="60" y1="60" x2="60" y2="108"/>
+              <line x1="60" y1="60" x2="26" y2="94"/>
+              <line x1="60" y1="60" x2="12" y2="60"/>
+              <line x1="60" y1="60" x2="26" y2="26"/>
+            </g>
+            <circle cx="60" cy="60" r="5" fill="#E8A33D"/>
+            <circle cx="60" cy="12" r="2" fill="#E8A33D"/>
+            <circle cx="94" cy="26" r="2" fill="#E8A33D"/>
+            <circle cx="108" cy="60" r="2" fill="#E8A33D"/>
+            <circle cx="94" cy="94" r="2" fill="#E8A33D"/>
+            <circle cx="60" cy="108" r="2" fill="#E8A33D"/>
+            <circle cx="26" cy="94" r="2" fill="#E8A33D"/>
+            <circle cx="12" cy="60" r="2" fill="#E8A33D"/>
+            <circle cx="26" cy="26" r="2" fill="#E8A33D"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap reveal">
+      <blockquote>
+        “[Placeholder quote from the fire chief, a volunteer, or a long-time visitor about what the evening means to the town.]”
+        <cite>— [Name, role — e.g. "Fire Chief, Freiwillige Feuerwehr City"]</cite>
+      </blockquote>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 Die Elbe brennt · Drage</p>
+    <ul class="footer-links">
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutzerklaerung.html">Datenschutzerklärung</a></li>
+      <li><a href="barrierefreiheit.html">Barrierefreiheit</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
