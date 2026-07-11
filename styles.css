@@ -247,9 +247,12 @@ nav.primary-nav a[aria-current="page"]::after{
   font-size:clamp(40px, 7vw, 76px);
   max-width:16ch;
 }
+.tagline-row{
+  position:relative;
+  max-width:52ch;
+}
 .hero .tagline{
   font-size:clamp(17px, 2vw, 20px);
-  max-width:52ch;
   color:var(--ink-soft);
 }
 
@@ -288,6 +291,65 @@ nav.primary-nav a[aria-current="page"]::after{
   margin-bottom:0.15em;
 }
 .error-hero .tagline{ max-width:56ch; }
+
+/* ---- entry-fee stamp badge ---- */
+.entry-badge{
+  position:absolute;
+  top:50%;
+  left:calc(100% + 32px);
+  z-index:2;
+  width:128px;
+  height:128px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent);
+  color:var(--accent-ink);
+  clip-path:polygon(50.0% 0.0%, 60.4% 11.4%, 75.0% 6.7%, 78.3% 21.7%, 93.3% 25.0%, 88.6% 39.6%, 100.0% 50.0%, 88.6% 60.4%, 93.3% 75.0%, 78.3% 78.3%, 75.0% 93.3%, 60.4% 88.6%, 50.0% 100.0%, 39.6% 88.6%, 25.0% 93.3%, 21.7% 78.3%, 6.7% 75.0%, 11.4% 60.4%, 0.0% 50.0%, 11.4% 39.6%, 6.7% 25.0%, 21.7% 21.7%, 25.0% 6.7%, 39.6% 11.4%);
+  transform:translateY(-50%) rotate(-11deg);
+  text-align:center;
+}
+.entry-badge-value{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:26px;
+  line-height:1;
+}
+.entry-badge-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-top:4px;
+}
+.entry-badge-note{
+  font-family:var(--font-mono);
+  font-size:8.5px;
+  letter-spacing:0.04em;
+  color:rgba(255,246,241,0.8);
+  margin-top:3px;
+}
+@media (max-width:960px){
+  .entry-badge{
+    top:-14px;
+    left:auto;
+    right:-14px;
+    transform:rotate(-11deg);
+  }
+}
+
+@media (max-width:640px){
+  .entry-badge{
+    width:96px; height:96px;
+    top:-10px;
+    right:-6px;
+    transform:rotate(-11deg);
+  }
+  .entry-badge-value{ font-size:20px; }
+  .entry-badge-label{ font-size:8.5px; }
+  .entry-badge-note{ font-size:7px; }
+}
 
 .firework-field{
   position:absolute; inset:0;
@@ -547,7 +609,8 @@ nav.primary-nav a[aria-current="page"]::after{
 .btn-ghost:hover{ border-color:var(--ink); }
 
 /* -------------------------------- sections ------------------------------- */
-section{ padding:clamp(32px, 5vw, 56px) 0; }
+section{ padding:clamp(48px, 8vw, 88px) 0; }
+section + section{ border-top:1px solid var(--line); }
 
 .section-head{
   display:flex; justify-content:space-between; align-items:flex-end;
