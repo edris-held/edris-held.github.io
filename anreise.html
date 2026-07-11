@@ -61,17 +61,29 @@
   <section>
     <div class="wrap">
       <div class="split reveal">
-        <div class="address-block">
+        <a class="address-block address-block-link"
+           href="https://www.google.com/maps/place/Bolzplatz+Drage/@53.4115678,10.2561177,759m/data=!3m1!1e3!4m6!3m5!1s0x47b1ef0055283af7:0xf7c6996e239f295b!8m2!3d53.4121164!4d10.2584495!16s%2Fg%2F11zcv31pvd!18m1!1e1"
+           target="_blank" rel="noopener noreferrer">
           [Venue Name]<br>
           [Street & House Number]<br>
           [Postal Code] [City]<br>
           [Country]
-        </div>
-        <div class="map-box" aria-hidden="true">
-          <span class="map-pin">[VENUE LOCATION]</span>
+        </a>
+
+        <div class="map-consent" data-map-consent>
+          <div class="map-consent-inner">
+            <p class="map-consent-text">
+              Hier würde eine Karte von <strong>Google Maps</strong> eingebunden. Beim Laden werden Daten (u.&nbsp;a. deine IP-Adresse) an Google LLC in die USA übertragen und dort ggf. verarbeitet und gespeichert. Weitere Informationen findest du in unserer
+              <a href="datenschutzerklaerung.html">Datenschutzerklärung</a>.
+            </p>
+            <button type="button" class="btn btn-primary map-consent-btn"
+              data-map-embed-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3306.9690005240195!2d10.256117661729885!3d53.41156781398081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b1ef0055283af7%3A0xf7c6996e239f295b!2sBolzplatz%20Drage!5e1!3m2!1sde!2sde!4v1783767946164!5m2!1sde!2sde">
+              Karte laden &amp; Google-Datenschutz akzeptieren
+            </button>
+          </div>
         </div>
       </div>
-      <p style="margin-top:20px; font-size:14px;">Replace the box above with an embedded map (e.g. Google Maps or OpenStreetMap iframe) once the venue is confirmed.</p>
+      <p style="margin-top:20px; font-size:14px;">Sobald der Veranstaltungsort feststeht: die Platzhalter-Adresse oben ersetzen und im Button-Attribut <code>data-map-embed-src</code> die echte Google-Maps-Embed-URL eintragen.</p>
     </div>
   </section>
 

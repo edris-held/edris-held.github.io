@@ -89,4 +89,23 @@ document.addEventListener("DOMContentLoaded", function () {
     tick();
     var intervalId = setInterval(tick, 1000);
   }
+
+  // Map consent gate — nothing is requested from Google until the visitor clicks
+  document.querySelectorAll("[data-map-consent]").forEach(function (box) {
+    var btn = box.querySelector(".map-consent-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var src = btn.getAttribute("data-map-embed-src");
+      if (!src) return;
+      var iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "no-referrer-when-downgrade";
+      iframe.title = "Google Maps – Anfahrt";
+      iframe.allowFullscreen = true;
+      box.innerHTML = "";
+      box.appendChild(iframe);
+      box.classList.add("is-loaded");
+    });
+  });
 });
