@@ -547,8 +547,7 @@ nav.primary-nav a[aria-current="page"]::after{
 .btn-ghost:hover{ border-color:var(--ink); }
 
 /* -------------------------------- sections ------------------------------- */
-section{ padding:clamp(48px, 8vw, 88px) 0; }
-section + section{ border-top:1px solid var(--line); }
+section{ padding:clamp(32px, 5vw, 56px) 0; }
 
 .section-head{
   display:flex; justify-content:space-between; align-items:flex-end;
