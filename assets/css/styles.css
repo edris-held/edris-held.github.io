@@ -107,6 +107,28 @@ h1,h2,h3{
 
 p{ margin:0 0 1em; color:var(--ink-soft); }
 
+ul, ol{
+  margin:0 0 1em;
+  padding-left:40px;
+  color:var(--ink-soft);
+}
+
+ul{ list-style:disc; }
+ol{ list-style:decimal; }
+
+li{
+  margin-bottom:0.4em;
+}
+
+li::marker{
+  color:var(--accent);
+}
+
+ul ul, ol ol, ul ol, ol ul{
+  margin-top:0.4em;
+  margin-bottom:0;
+}
+
 .eyebrow{
   font-family:var(--font-mono);
   font-size:12.5px;
