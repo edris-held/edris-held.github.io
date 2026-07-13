@@ -861,6 +861,16 @@ blockquote cite{
   line-height:1.6;
   margin-bottom:18px;
 }
+
+@media (max-width:640px){
+  .map-consent:not(.is-loaded){
+    aspect-ratio:auto;
+    min-height:260px;
+  }
+  .map-consent-inner{
+    padding:20px 18px;
+  }
+}
 .map-consent-text a{
   color:var(--accent);
   text-decoration:underline;
