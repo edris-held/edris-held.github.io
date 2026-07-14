@@ -61,39 +61,33 @@
       <div class="legal-block">
         <h2>Angaben gemäß § 5 DDG</h2>
         <p>
-          Förderverein der Freiwilligen Feuerwehr Drage<br>
+          Freiwillige Feuerwehr Drage<br>
           Winsener Straße 16<br>
           21423 Drage<br>
         </p>
 
         <h3>Vertreten durch:</h3>
         <p>
-          PERSON PERSON
+          Gemeinde Drage<br>
+          vertreten durch die Bürgermeisterin Silke Rocholl-Zube
         </p>
 
         <h3>Kontakt:</h3>
         <p>
-          Telefon: TELEFON<br>
-          E-Mail: EMAIL ADRESSE
+          E-Mail: <span class="js-mail-text" data-mail-local="info" data-mail-domain="ff-drage.de">Lädt …</span><br>
+          Telefon: &#48;&#52;&#49;&#55;&#55;&#32;– &#53;&#48;&#48;<br>
         </p>
-
-        <h3>Registereintrag:</h3>
-        <p>
-          Eintragung im Vereinsregister.<br>
-          Registergericht: GERICHT<br>
-          Registernummer: NUMMER
-        </p>
-
-        <h3>Aufsichtsbehörde:</h3>
-        <p>
-          BEHÖRDE
-        </p>
+        <noscript>
+          <p style="margin-top:14px; font-size:14.5px;">
+            E-Mail: kontakt [at] ff-drage [punkt] de
+          </p>
+        </noscript>
 
         <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</h3>
         <p>
-          NAME<br>
-          STRASSE<br>
-          ORT
+          Ortsbrandmeister Benjamin Storbeck<br>
+          Winsener Straße 16<br>
+          21423 Drage
         </p>
 
         <h3>Verbraucherstreitbeilegung</h3>
@@ -124,6 +118,25 @@
   </section>
 
 </main>
+
+<script>
+  (function () {
+    var user = "info";
+    var domain = "ff-drage.de";
+    var address = user + "@" + domain;
+
+    document.querySelectorAll(".js-mail-btn").forEach(function (el) {
+      var subject = el.getAttribute("data-mail-subject") || "";
+      var href = "mailto:" + address + (subject ? "?subject=" + encodeURIComponent(subject) : "");
+      el.setAttribute("href", href);
+
+      var textEl = el.querySelector(".js-mail-text");
+      if (textEl) {
+        textEl.textContent = address;
+      }
+    });
+  })();
+</script>
 
 <footer class="site-footer">
   <div class="wrap">

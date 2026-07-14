@@ -1,4 +1,3 @@
-// Mobile nav toggle
 document.addEventListener("DOMContentLoaded", function () {
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector(".primary-nav");
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Gentle reveal-on-scroll for elements marked .reveal
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var revealEls = document.querySelectorAll(".reveal");
   if (!reduceMotion && "IntersectionObserver" in window && revealEls.length) {
@@ -43,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Countdown to the firework
   var countdownEl = document.querySelector(".countdown");
   if (countdownEl) {
     var target = new Date(countdownEl.getAttribute("data-countdown")).getTime();
@@ -62,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var tick = function () {
       var diff = target - Date.now();
 
-      // Still counting down
       if (diff > 0) {
         var days = Math.floor(diff / 86400000);
         var hours = Math.floor((diff % 86400000) / 3600000);
@@ -75,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Within the display window (event day, up to ~6h after start): show a live message
       if (diff > -6 * 3600000) {
         grid.hidden = true;
         message.hidden = false;
@@ -83,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Well past the event: stop updating
       grid.hidden = true;
       message.hidden = false;
       message.textContent = "Bis zum nächsten Mal!";
@@ -94,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var intervalId = setInterval(tick, 1000);
   }
 
-  // Map consent gate — nothing is requested from Google until the visitor clicks
   document.querySelectorAll("[data-map-consent]").forEach(function (box) {
     var btn = box.querySelector(".map-consent-btn");
     if (!btn) return;
@@ -111,5 +104,12 @@ document.addEventListener("DOMContentLoaded", function () {
       box.appendChild(iframe);
       box.classList.add("is-loaded");
     });
+  });
+
+  document.querySelectorAll(".js-mail-text[data-mail-local]").forEach(function (el) {
+    var local = el.getAttribute("data-mail-local");
+    var domain = el.getAttribute("data-mail-domain");
+    if (!local || !domain) return;
+    el.textContent = local + "@" + domain;
   });
 });
